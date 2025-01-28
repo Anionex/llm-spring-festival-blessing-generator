@@ -123,7 +123,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                throw new Error('生成失败');
+                throw new Error('请重试');
             }
 
             const data = await response.json();
