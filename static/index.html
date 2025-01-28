@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#e60012">
+    <meta name="description" content="智能春节祝福生成器 - 生成独特的春节祝福语和对联">
+    <meta name="format-detection" content="telephone=no">
+    <title>智能春节祝福生成器</title>
+    
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>智能春节祝福生成器</h1>
+            <p class="subtitle">国产大模型赋能，告别千篇一律的新春祝福🏮</p>
+            <div class="lantern left"></div>
+            <div class="lantern right"></div>
+        </header>
+
+        <main>
+            <section class="input-section">
+                <div class="input-group">
+                    <label for="recipient">你要祝福的人</label>
+                    <input type="text" id="recipient" placeholder="请输入接收祝福的人的名字" autocomplete="off">
+                </div>
+                <div class="input-group">
+                    <label for="requirements">额外要求（可选）</label>
+                    <textarea id="requirements" placeholder="例如：想要表达的特殊心意、对方的特点等" rows="3"></textarea>
+                </div>
+                <button id="generate" class="generate-btn">
+                    <span>生成祝福</span>
+                </button>
+            </section>
+
+            <section class="result-section" style="display: none;">
+                <div class="greeting-card">
+                    <h2>祝福语</h2>
+                    <p id="greeting-text"></p>
+                </div>
+                
+                <div class="couplet-image">
+                    <h2>定制春联</h2>
+                    <div id="couplet-container"></div>
+                    <button id="save-image" class="save-btn">
+                        <span>保存春联</span>
+                    </button>
+                </div>
+            </section>
+
+            <section class="history-section">
+                <h2>历史记录</h2>
+                <div id="history-list" class="history-list"></div>
+            </section>
+        </main>
+
+        <div id="loading" class="loading" style="display: none;">
+            <div class="spinner"></div>
+            <p>正在用心生成中...</p>
+        </div>
+        <footer style="text-align: center;">
+            <p>Created by <a href="https://github.com/anionex" target="_blank">Anion</a> | &copy; 2025 Anion. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/main.js"></script>
+</body>
+</html> 
