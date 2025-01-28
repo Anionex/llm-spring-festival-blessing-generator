@@ -33,11 +33,18 @@ class GreetingGenerator:
             messages=[
                 {"role": "system", "content": "你是一个擅长写祝福语的文学家，特别擅长写应景且别出心裁的春节祝福。"},
                 {"role": "user", "content": prompt}
-            ]
+            ],
+            stream=True
         )
-        print(response)        
-        return response.choices[0].message.content.strip()
-
+        
+        collected_messages = []
+        for chunk in response:
+            if chunk.choices[0].delta.content is not None:
+                content = chunk.choices[0].delta.content
+                print(content, end='', flush=True)
+                collected_messages.append(content)
+                
+        return ''.join(collected_messages).strip()
     def generate_couplet(self, recipient):
         prompt = f"""请为{recipient}生成一副春联。
 要求：
@@ -47,7 +54,7 @@ class GreetingGenerator:
 4. 可以巧妙地将{recipient}的名字融入其中
 5. 横批要与上下联相呼应（4字以内）
 
-请按照以下格式返回：
+请按照以下格式返回，不要输出其他内容：
 横批：xxx
 上联：xxx
 下联：xxx"""
@@ -57,12 +64,19 @@ class GreetingGenerator:
             messages=[
                 {"role": "system", "content": "你是一个精通对联的AI助手，特别擅长创作符合平仄、意境优美的春联。"},
                 {"role": "user", "content": prompt}
-            ]
+            ],
+            stream=True
         )
-        print(response)
-        couplet_text = response.choices[0].message.content.strip()
+        
+        collected_messages = []
+        for chunk in response:
+            if chunk.choices[0].delta.content is not None:
+                content = chunk.choices[0].delta.content
+                print(content, end='', flush=True)
+                collected_messages.append(content)
+                
+        couplet_text = ''.join(collected_messages).strip()
         return self._parse_couplet(couplet_text)
-
     def _parse_couplet(self, couplet_text):
         lines = couplet_text.split('\n')
         horizontal = ""
