@@ -4,8 +4,8 @@ from flask_limiter import Limiter
 from flask_limiter.util import get_remote_address
 from dotenv import load_dotenv
 import os
-import sqlite3
 from greeting_generator import GreetingGenerator
+import datetime
 
 # Load environment variables
 load_dotenv()
@@ -23,24 +23,6 @@ limiter = Limiter(
     default_limits=["100 per day", "10 per hour"],
     storage_uri="memory://"
 )
-
-# Database initialization
-def init_db():
-    conn = sqlite3.connect('greetings.db')
-    c = conn.cursor()
-    c.execute('''
-        CREATE TABLE IF NOT EXISTS greetings
-        (id INTEGER PRIMARY KEY AUTOINCREMENT,
-         recipient TEXT NOT NULL,
-         greeting TEXT NOT NULL,
-         couplet TEXT NOT NULL,
-         timestamp DATETIME DEFAULT CURRENT_TIMESTAMP)
-    ''')
-    conn.commit()
-    conn.close()
-
-# Initialize database on startup
-init_db()
 
 @app.route('/')
 def serve_frontend():
@@ -70,16 +52,6 @@ def generate_greeting():
         # Generate couplet image
         image_base64 = generator.generate_couplet_image(horizontal, upper, lower)
         
-        # Save to database
-        conn = sqlite3.connect('greetings.db')
-        c = conn.cursor()
-        c.execute('''
-            INSERT INTO greetings (recipient, greeting, couplet)
-            VALUES (?, ?, ?)
-        ''', (recipient, greeting, f"{horizontal}|{upper}|{lower}"))
-        conn.commit()
-        conn.close()
-        
         return jsonify({
             'greeting': greeting,
             'couplet': {
@@ -87,30 +59,12 @@ def generate_greeting():
                 'upper': upper,
                 'lower': lower
             },
-            'image': image_base64
+            'image': image_base64,
+            'timestamp': str(datetime.datetime.now())
         })
     except Exception as e:
         print(e)
         return jsonify({'error': str(e)}), 500
 
-@app.route('/api/history', methods=['GET'])
-def get_history():
-    try:
-        conn = sqlite3.connect('greetings.db')
-        c = conn.cursor()
-        c.execute('SELECT * FROM greetings ORDER BY timestamp DESC LIMIT 10')
-        history = c.fetchall()
-        conn.close()
-        
-        return jsonify([{
-            'id': h[0],
-            'recipient': h[1],
-            'greeting': h[2],
-            'couplet': h[3],
-            'timestamp': h[4]
-        } for h in history])
-    except Exception as e:
-        return jsonify({'error': str(e)}), 500
-
 if __name__ == '__main__':
-    app.run(debug=True, port=5000) 
+    app.run(debug=False, port=5000) 

@@ -160,7 +160,7 @@ input:focus, textarea:focus {
 .history-item {
     padding: 15px;
     border-bottom: 1px solid #eee;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
 }
 
 .history-item:last-child {
@@ -169,11 +169,50 @@ input:focus, textarea:focus {
 
 .history-item:hover {
     background-color: var(--background);
+    transform: translateY(-2px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
 }
 
-.history-item p {
+.history-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.history-time {
+    color: #666;
+    font-size: 0.9em;
+}
+
+.history-content {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.history-content .greeting {
+    color: #333;
+    line-height: 1.8;
+}
+
+.couplet-text {
+    background-color: rgba(230, 0, 18, 0.05);
+    padding: 10px;
+    border-radius: 8px;
+    font-size: 0.95em;
+}
+
+.couplet-text p {
     margin: 5px 0;
-    font-size: clamp(14px, 3vw, 16px);
+    color: var(--primary-red);
+}
+
+.no-history {
+    text-align: center;
+    padding: 30px;
+    color: #666;
+    font-size: 1.1em;
 }
 
 .loading {
