@@ -55,9 +55,9 @@ class GreetingGenerator:
 5. 横批要与上下联相呼应（4字以内）
 
 请按照以下格式返回，不要输出其他内容：
-横批：xxx
 上联：xxx
-下联：xxx"""
+下联：xxx
+横批：xxx"""
         print("getting couplet...")
         response = self.client.chat.completions.create(
             model="qwen-max-2025-01-25",
