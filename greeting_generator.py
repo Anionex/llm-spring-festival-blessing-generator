@@ -20,22 +20,22 @@ class GreetingGenerator:
     def generate_greeting(self, recipient, extra_requirements=""):
         prompt = f"""请为{recipient}生成一段温暖、独特且充满诚意的春节祝福语。
 要求：
-1. 祝福语要体现出对{recipient}的个性化关怀
+1. 祝福语要体现出对{recipient}的个性化关怀，最好能结合语境巧妙结合接受者的名字，让人眼前一亮。
 2. 语言要优美、富有文采，但不要过于生硬
 3. 长度在100字左右
 4. 要包含传统节日元素
 5. 今年是2025蛇年。
 {f'6. 额外要求：{extra_requirements}' if extra_requirements else ''}
-"""
-
+7. 不要输出其他内容"""
+        print("getting blessing...")
         response = self.client.chat.completions.create(
             model="qwen-max-2025-01-25",
             messages=[
-                {"role": "system", "content": "你是一个擅长写祝福语的AI助手，特别擅长写应景、温暖人心的春节祝福。"},
+                {"role": "system", "content": "你是一个擅长写祝福语的文学家，特别擅长写应景且别出心裁的春节祝福。"},
                 {"role": "user", "content": prompt}
             ]
         )
-        
+        print(response)        
         return response.choices[0].message.content.strip()
 
     def generate_couplet(self, recipient):
@@ -51,7 +51,7 @@ class GreetingGenerator:
 横批：xxx
 上联：xxx
 下联：xxx"""
-
+        print("getting couplet...")
         response = self.client.chat.completions.create(
             model="qwen-max-2025-01-25",
             messages=[
@@ -59,7 +59,7 @@ class GreetingGenerator:
                 {"role": "user", "content": prompt}
             ]
         )
-        
+        print(response)
         couplet_text = response.choices[0].message.content.strip()
         return self._parse_couplet(couplet_text)
 
